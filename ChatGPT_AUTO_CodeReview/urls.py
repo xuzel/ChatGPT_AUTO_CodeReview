@@ -15,7 +15,9 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+import code_compare.views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', code_compare.views.main_code_diff_compare)
 ]
