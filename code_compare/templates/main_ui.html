@@ -1,60 +1,3 @@
-{#{% load static %}#}
-{#<!doctype html>#}
-{#<html lang="en">#}
-{#  <head>#}
-{#    <meta charset="utf-8">#}
-{#    <meta name="viewport" content="width=device-width, initial-scale=1">#}
-{#    <title>Auto CodeReview</title>#}
-{#    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">#}
-{#    <link href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" rel="stylesheet">#}
-{#  </head>#}
-{#  <body>#}
-{##}
-{##}
-{#    <nav class="navbar navbar-expand-lg bg-body-tertiary">#}
-{#      <div class="container-fluid">#}
-{#        <a class="navbar-brand" href="#">CodeReview</a>#}
-{#        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">#}
-{#          <span class="navbar-toggler-icon"></span>#}
-{#        </button>#}
-{#        <div class="collapse navbar-collapse" id="navbarSupportedContent">#}
-{#          <ul class="navbar-nav me-auto mb-2 mb-lg-0">#}
-{#            <li class="nav-item">#}
-{#              <a class="nav-link active" aria-current="page" href="#">Choose File</a>#}
-{#            </li>#}
-{#            <li class="nav-item">#}
-{#              <a class="nav-link" href="#">Link</a>#}
-{#            </li>#}
-{#            <li class="nav-item dropdown">#}
-{#              <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">#}
-{#                Dropdown#}
-{#              </a>#}
-{#              <ul class="dropdown-menu">#}
-{#                <li><a class="dropdown-item" href="#">Action</a></li>#}
-{#                <li><a class="dropdown-item" href="#">Another action</a></li>#}
-{#                <li><hr class="dropdown-divider"></li>#}
-{#                <li><a class="dropdown-item" href="#">Something else here</a></li>#}
-{#              </ul>#}
-{#            </li>#}
-{#            <li class="nav-item">#}
-{#              <a class="nav-link disabled">Disabled</a>#}
-{#            </li>#}
-{#          </ul>#}
-{#          <form class="d-flex" role="search">#}
-{#            <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">#}
-{#            <button class="btn btn-outline-success" type="submit">Search</button>#}
-{#          </form>#}
-{#        </div>#}
-{#      </div>#}
-{#    </nav>#}
-{##}
-{##}
-{#    <script type="text/javascript" src="{% static 'bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js'%}"></script>#}
-{#    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-/mhDoLbDldZc3qpsJHpLogda//BVZbgYuw6kof4u2FrCedxOtgRZDTHgHUhOCVim" crossorigin="anonymous"></script>#}
-{#  </body>#}
-{#</html>#}
-
-
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -62,12 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Auto CodeReview</title>
-
-
-
-
-
-<link href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" rel="stylesheet">
+    <link href="{% static 'bootstrap-5.3.0-alpha1-dist/css/bootstrap.min.css' %}" rel="stylesheet">
 
     <style>
       .bd-placeholder-img {
@@ -120,6 +58,43 @@
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
       }
+    </style>
+
+    <style>
+
+      .code-review-box {
+        background-color: #fff;
+        border-radius: 6px;
+        border: 1px solid #e1e4e8;
+        margin-bottom: 20px;
+      }
+      .code-block {
+        font-family: 'Courier New', monospace;
+        padding: 1px 16px;
+        overflow-x: auto;
+        white-space: pre-wrap;
+      }
+      .code-block code {
+        {#display: block;#}
+      }
+      .code-block del {
+        background-color: #ffefef;
+        text-decoration: none;
+        color: #cc0000;
+      }
+      .code-block ins {
+        background-color: #e6ffed;
+        text-decoration: none;
+        color: #006600;
+      }
+      .comment-box {
+        border-top: 1px solid #e1e4e8;
+        padding: 16px;
+      }
+      .comment {
+        color: #586069;
+      }
+      /* Add more styles as needed */
     </style>
 
 
@@ -180,103 +155,102 @@
 
 
       <div class="table-responsive">
-        <table class="table table-striped table-sm">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">Header</th>
-              <th scope="col">Header</th>
-              <th scope="col">Header</th>
-              <th scope="col">Header</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>1,001</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
-            <tr>
-              <td>1,002</td>
-              <td>placeholder</td>
-              <td>irrelevant</td>
-              <td>visual</td>
-              <td>layout</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>data</td>
-              <td>rich</td>
-              <td>dashboard</td>
-              <td>tabular</td>
-            </tr>
-            <tr>
-              <td>1,003</td>
-              <td>information</td>
-              <td>placeholder</td>
-              <td>illustrative</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,004</td>
-              <td>text</td>
-              <td>random</td>
-              <td>layout</td>
-              <td>dashboard</td>
-            </tr>
-            <tr>
-              <td>1,005</td>
-              <td>dashboard</td>
-              <td>irrelevant</td>
-              <td>text</td>
-              <td>placeholder</td>
-            </tr>
-            <tr>
-              <td>1,006</td>
-              <td>dashboard</td>
-              <td>illustrative</td>
-              <td>rich</td>
-              <td>data</td>
-            </tr>
-            <tr>
-              <td>1,007</td>
-              <td>placeholder</td>
-              <td>tabular</td>
-              <td>information</td>
-              <td>irrelevant</td>
-            </tr>
-            <tr>
-              <td>1,008</td>
-              <td>random</td>
-              <td>data</td>
-              <td>placeholder</td>
-              <td>text</td>
-            </tr>
-            <tr>
-              <td>1,009</td>
-              <td>placeholder</td>
-              <td>irrelevant</td>
-              <td>visual</td>
-              <td>layout</td>
-            </tr>
-            <tr>
-              <td>1,010</td>
-              <td>data</td>
-              <td>rich</td>
-              <td>dashboard</td>
-              <td>tabular</td>
-            </tr>
-            <tr>
-              <td>1,011</td>
-              <td>information</td>
-              <td>placeholder</td>
-              <td>illustrative</td>
-              <td>data</td>
-            </tr>
-          </tbody>
-        </table>
+
+
+
+
+
+
+
+<div class="code-review-box">
+  <div class="code-block">
+    <!-- Your code difference will go here -->
+    <pre>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    </pre>
+  </div>
+  <div class="comment-box">
+    <div class="comment">
+      <!-- Your comment will go here -->
+      This is a comment about the above code changes.
+    </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="code-review-box">
+  <div class="code-block">
+    <!-- Your code difference will go here -->
+    <pre>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    <code><del>- line to be removed</del></code>
+    <code><ins>+ line to be added</ins></code>
+    <code>unchanged line of code</code>
+    </pre>
+  </div>
+  <div class="comment-box">
+    <div class="comment">
+      <!-- Your comment will go here -->
+      This is a comment about the above code changes.
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
       </div>
     </main>
   </div>
