@@ -5,7 +5,7 @@ from django.http import HttpResponse
 from pydriller import Repository
 from urllib.parse import urlparse
 import typing
-import code_compare.code_reviewer.code_review as code_review
+import code_compare.code_reviewer_microsoft.code_review as code_review
 
 codereview = code_review.CoseReview()
 data_dict = dict()

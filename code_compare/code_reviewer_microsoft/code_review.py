@@ -1,7 +1,7 @@
 import argparse
 import torch
-from code_compare.code_reviewer.configs import add_args
-from code_compare.code_reviewer.models import ReviewerModel, build_or_load_gen_model
+from code_compare.code_reviewer_microsoft.configs import add_args
+from code_compare.code_reviewer_microsoft.models import ReviewerModel, build_or_load_gen_model
 
 MAX_SOURCE_LENGTH = 512
 
