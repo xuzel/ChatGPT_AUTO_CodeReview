@@ -3,6 +3,9 @@ from django.http import HttpResponse
 from pydriller import Repository
 from urllib.parse import urlparse
 import typing
+import code_compare.code_reviewer.code_review as code_review
+
+codereview = code_review.CoseReview()
 
 
 def url_preprocess(url: str) -> typing.Dict[str, str]:
@@ -38,8 +41,7 @@ def get_commit_diff(repositories_address: str, commit_hash: str) -> typing.Dict[
     :param commit_hash:commit哈希值
     :return:一个字典，字典的key是变更的文件名，value是一个列表，包含了文件全部变更信息
     """
-    # TODO
-    file_changes = {}
+    file_changes = dict()
 
     for commit in Repository(repositories_address).traverse_commits():
         if commit.hash != commit_hash:
@@ -70,5 +72,22 @@ def example():
         break
 
 
+code_diff = """
+            '--name', build_environment_container_name,
+            '-v', f'{host_working_dir}:{container_working_directory}',
+            '-v', f'{host_install_scripts_dir}:{container_install_scripts_dir}',
++           packaging_config.builder_dockerhub_image
+-           packaging_config.builder_image
+        ]
+        subprocess.run(build_environment_startup_cmd, check=True)
+
+"""
+
+
 def main_code_diff_compare(request):
-    return render(request, 'main_ui.html')
+    if request.method == 'POST':
+        search = request.POST.get('search')
+        return render(request, 'main_ui.html')
+    elif request.method == 'GET':
+        print('get')
+        return render(request, 'main_ui.html')
