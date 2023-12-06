@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from pydriller import Repository
+from urllib.parse import urlparse
 import typing
 
 
@@ -16,10 +17,17 @@ def url_preprocess(url: str) -> typing.Dict[str, str]:
         'hash': '26625e44efdc890b97f6c5452e442c366cac95d5'
     }
     """
-    # TODO
+    # 复制URL
+    parsed_url = urlparse(url)
+
+    # 分离URL与harsh
+    path_segments = parsed_url.path.strip('/').split('/')
+    repository_url = f"{parsed_url.scheme}://{parsed_url.netloc}/{'/'.join(path_segments[:-2])}"
+    commit_hash = path_segments[-1]
+
     return {
-        'url': '',
-        'hash': ''
+        'url': repository_url,
+        'hash': commit_hash
     }
 
 
@@ -31,11 +39,20 @@ def get_commit_diff(repositories_address: str, commit_hash: str) -> typing.Dict[
     :return:一个字典，字典的key是变更的文件名，value是一个列表，包含了文件全部变更信息
     """
     # TODO
-    return {
-        'file_name1': ["file change 1", "file change 2", "..."],
-        'file_name2': ["file change 1", "file change 2", "..."],
-        'file_name3': ["file change 1", "file change 2", "..."]
-    }
+    file_changes = {}
+
+    for commit in Repository(repositories_address).traverse_commits():
+        if commit.hash != commit_hash:
+            continue
+
+        for file in commit.modified_files:
+            file_name = file.filename
+            file_diff = file.diff.splitlines()
+            file_changes[file_name] = file_diff
+            break
+        break
+
+    return file_changes
 
 
 def example():
