@@ -1,3 +1,5 @@
+import re
+
 from django.shortcuts import render
 from django.http import HttpResponse
 from pydriller import Repository
@@ -6,6 +8,9 @@ import typing
 import code_compare.code_reviewer.code_review as code_review
 
 codereview = code_review.CoseReview()
+data_dict = dict()
+file_name_list = list()
+change_dict = dict()
 
 
 def url_preprocess(url: str) -> typing.Dict[str, str]:
@@ -20,14 +25,10 @@ def url_preprocess(url: str) -> typing.Dict[str, str]:
         'hash': '26625e44efdc890b97f6c5452e442c366cac95d5'
     }
     """
-    # 复制URL
     parsed_url = urlparse(url)
-
-    # 分离URL与harsh
     path_segments = parsed_url.path.strip('/').split('/')
     repository_url = f"{parsed_url.scheme}://{parsed_url.netloc}/{'/'.join(path_segments[:-2])}"
     commit_hash = path_segments[-1]
-
     return {
         'url': repository_url,
         'hash': commit_hash
@@ -46,48 +47,61 @@ def get_commit_diff(repositories_address: str, commit_hash: str) -> typing.Dict[
     for commit in Repository(repositories_address).traverse_commits():
         if commit.hash != commit_hash:
             continue
-
         for file in commit.modified_files:
             file_name = file.filename
-            file_diff = file.diff.splitlines()
-            file_changes[file_name] = file_diff
-            break
-        break
-
+            file_diff = file.diff
+            file_changes[file_name] = list()
+            sections = re.split(r'@@.*?@@', file_diff)
+            for i, section in enumerate(sections):
+                if not i:
+                    continue
+                file_changes[file_name].append(section)
     return file_changes
 
 
-def example():
-    from pydriller import Repository
-    for commit in Repository('https://github.com/xuzel/ChatGPT_AUTO_CodeReview').traverse_commits():
-        if commit.hash != 'e846355798e3fca1bbf94fa173cd731b11b5753e':
-            continue
-        # print(commit.hash)
-        # print(commit.msg)
-        # print(commit.author.name)
-
-        for file in commit.modified_files:
-            print(file.diff)
-            break
-        break
-
-
-code_diff = """
-            '--name', build_environment_container_name,
-            '-v', f'{host_working_dir}:{container_working_directory}',
-            '-v', f'{host_install_scripts_dir}:{container_install_scripts_dir}',
-+           packaging_config.builder_dockerhub_image
--           packaging_config.builder_image
-        ]
-        subprocess.run(build_environment_startup_cmd, check=True)
-
-"""
-
-
 def main_code_diff_compare(request):
+    global data_dict
+    global file_name_list
+    global change_dict
     if request.method == 'POST':
+        data_dict = dict()
+        file_name_list = list()
+        change_dict = dict()
         search = request.POST.get('search')
-        return render(request, 'main_ui.html')
+        url, commit_hash = url_preprocess(search)['url'], url_preprocess(search)['hash']
+        change_dict = get_commit_diff(url, commit_hash)
+        # print(change_dict)
+        for file_name, changes in change_dict.items():
+            file_name_list.append(file_name)
+            data_dict[file_name] = list()
+
+            for each_change in changes:
+                one_pice_change = list()
+                change_in_line = each_change.splitlines()
+                for each_line in change_in_line:
+                    if not each_line or each_line == ' ':
+                        continue
+                    if each_line.startswith('+'):
+                        one_pice_change.append([each_line, 0])
+                    elif each_line.startswith('-'):
+                        one_pice_change.append([each_line, 1])
+                    else:
+                        one_pice_change.append([each_line, 2])
+                data_dict[file_name].append(one_pice_change)
+        print(data_dict)
+
+        return render(request, 'main_ui.html', {'file_name': file_name_list})
     elif request.method == 'GET':
-        print('get')
-        return render(request, 'main_ui.html')
+        file_name = request.GET.get('file')
+        print(file_name)
+        if data_dict.get(file_name):
+            print(data_dict[file_name])
+            change_code_and_command = list()
+            for index, value in enumerate(change_dict[file_name]):
+                change_code_and_command.append({
+                    'data': data_dict[file_name][index],
+                    'command': codereview.generate(change_dict[file_name][index])
+                })
+
+            return render(request, 'main_ui.html', {'file_name': file_name_list, 'change_dict': change_code_and_command})
+        return render(request, 'main_ui.html', {'file_name': file_name_list})

@@ -1,3 +1,5 @@
+import re
+
 from pydriller import Repository
 import typing
 from urllib.parse import urlparse
@@ -43,15 +45,24 @@ def get_commit_diff(repositories_address: str, commit_hash: str) -> typing.Dict[
     for commit in Repository(repositories_address).traverse_commits():
         if commit.hash != commit_hash:
             continue
-
         for file in commit.modified_files:
             file_name = file.filename
-            file_diff = file.diff.splitlines()
-            file_changes[file_name] = file_diff
-            break
-        break
-
+            file_diff = file.diff
+            file_changes[file_name] = list()
+            sections = re.split(r'@@.*?@@', file_diff)
+            for i, section in enumerate(sections):
+                if not i:
+                    continue
+                file_changes[file_name].append(section)
     return file_changes
 
 
-
+commit = 'https://github.com/xuzel/ChatGPT_AUTO_CodeReview/commit/f7e958de987c38c0f49d16dc3bdce4160238083e'
+a = url_preprocess(commit)
+print(a)
+b = get_commit_diff(a['url'], a['hash'])
+for x, y in b.items():
+    print('\n\n')
+    print(x)
+    for z in y:
+        print(z)

@@ -67,6 +67,7 @@
         border-radius: 6px;
         border: 1px solid #e1e4e8;
         margin-bottom: 20px;
+          padding: 45px 0px;
       }
       .code-block {
         font-family: 'Courier New', monospace;
@@ -89,7 +90,7 @@
       }
       .comment-box {
         border-top: 1px solid #e1e4e8;
-        padding: 16px;
+        padding: 25px;
       }
       .comment {
         color: #586069;
@@ -97,11 +98,57 @@
       /* Add more styles as needed */
     </style>
 
+<style>
+    /* body {
+        font-family: Arial, sans-serif;
+        background-color: #f6f8fa;
+        margin: 0;
+        padding: 20px;
+    } */
+    .file-diff-container {
+        background: #fff;
+        border: 1px solid #d1d5da;
+        border-radius: 6px;
+        padding: 16px;
+        margin-bottom: 16px;
+    }
+    .file-header {
+        background-color: #f6f8fa;
+        border-bottom: 1px solid #d1d5da;
+        padding: 10px;
+        border-top-left-radius: 6px;
+        border-top-right-radius: 6px;
+        font-weight: bold;
+    }
+    .diff-line {
+        font-family: 'Courier New', Courier, monospace;
+        white-space: pre;
+    }
+    .line-removed {
+        background-color: #ffeef0;
+        color: #24292e;
+    }
+    .line-added {
+        background-color: #e6ffed;
+        color: #24292e;
+    }
+    .normal-line {
+        background-color: #ffffff;
+        color: #24292e;
+    }
+    .line-number {
+        display: inline-block;
+        width: 50px;
+        padding-right: 10px;
+        text-align: right;
+        color: #57606a;
+    }
+</style>
 
     <link href="{% static 'dashboard.css' %}" rel="stylesheet">
   </head>
   <body>
-<form method="post">
+<form class="sticky-top" method="post">
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">CodeReview</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -129,11 +176,13 @@
               FILE CHANGE
             </a>
           </li>
+            {% for each_name in file_name %}
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">
-              a.txt
+            <a class="nav-link active" aria-current="page" href="?file={{ each_name }}">
+              {{ each_name }}
             </a>
           </li>
+            {% endfor %}
         </ul>
       </div>
     </nav>
@@ -156,111 +205,82 @@
       </div>
 
 
-      <div class="table-responsive">
+{#      <div class="table-responsive">#}
+
+
+
+        {% for each_pice in change_dict %}
+            <div class="file-diff-container">
+                    {% for each_line in each_pice.data %}
+                        {% if each_line.1 == 0 %}
+                            <div class="diff-line line-added">{{ each_line.0 }}</div>
+                         {% elif each_line.1 == 1 %}
+                            <div class="diff-line line-removed">{{ each_line.0 }}</div>
+                         {% else %}
+                            <div class="diff-line normal-line">{{ each_line.0 }}</div>
+                        {% endif %}
+                    {% endfor %}
+              </div>
+              <div class="comment-box">
+                <div class="comment">
+                  {{ each_pice.command }}
+                </div>
+              </div>
+
+        {% endfor %}
 
 
 
 
 
-
-
-<div class="code-review-box">
-  <div class="code-block">
-    <!-- Your code difference will go here -->
-    <pre>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    </pre>
-  </div>
-  <div class="comment-box">
-    <div class="comment">
-      <!-- Your comment will go here -->
-      This is a comment about the above code changes.
-    </div>
-  </div>
-</div>
-
-
-
-
-
-<div class="code-review-box">
-  <div class="code-block">
-    <!-- Your code difference will go here -->
-    <pre>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    <code><del>- line to be removed</del></code>
-    <code><ins>+ line to be added</ins></code>
-    <code>unchanged line of code</code>
-    </pre>
-  </div>
-  <div class="comment-box">
-    <div class="comment">
-      <!-- Your comment will go here -->
-      This is a comment about the above code changes.
-    </div>
-  </div>
-</div>
+{#<div class="code-review-box">#}
+{#  <div class="code-block">#}
+{#    <!-- Your code difference will go here -->#}
+{#    <pre>#}
+{#    <code>unchanged line of code</code>#}
+{#    <code><del>- line to be removed</del></code>#}
+{#    <code><ins>+ line to be added</ins></code>#}
+{#    <code>unchanged line of code</code>#}
+{#    <code><del>- line to be removed</del></code>#}
+{#    <code><ins>+ line to be added</ins></code>#}
+{#    <code>unchanged line of code</code>#}
+{#    <code>unchanged line of code</code>#}
+{#    <code><del>- line to be removed</del></code>#}
+{#    <code><ins>+ line to be added</ins></code>#}
+{#    <code>unchanged line of code</code>#}
+{#    <code><del>- line to be removed</del></code>#}
+{#    <code><ins>+ line to be added</ins></code>#}
+{#    <code>unchanged line of code</code>#}
+{#    <code>unchanged line of code</code>#}
+{#    <code><del>- line to be removed</del></code>#}
+{#    <code><ins>+ line to be added</ins></code>#}
+{#    <code>unchanged line of code</code>#}
+{#    <code><del>- line to be removed</del></code>#}
+{#    <code><ins>+ line to be added</ins></code>#}
+{#    <code>unchanged line of code</code>#}
+{#    </pre>#}
+{#  </div>#}
+{#  <div class="comment-box">#}
+{#    <div class="comment">#}
+{#      <!-- Your comment will go here -->#}
+{#      This is a comment about the above code changes.#}
+{#    </div>#}
+{#  </div>#}
+{#</div>#}
 
 
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-      </div>
+{#      </div>#}
     </main>
   </div>
 </div>
 
 
     <script type="text/javascript" src="{% static 'bootstrap-5.3.0-alpha1-dist/js/bootstrap.bundle.min.js'%}"></script>
-
-      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="{% static 'dashboard.js' %}"></script>
+      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script>
+<script src="{% static 'dashboard.js' %}"></script>
   </body>
 </html>
