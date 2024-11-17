@@ -94,6 +94,7 @@
       }
       .comment {
         color: #586069;
+        white-space: pre-line;
       }
       /* Add more styles as needed */
     </style>
@@ -150,7 +151,7 @@
   <body>
 <form class="sticky-top" method="post">
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
-  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">CodeReview</a>
+  <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="http://codereview.vip.cpolar.top/">CodeReview</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -205,7 +206,6 @@
       </div>
 
 
-{#      <div class="table-responsive">#}
 
 
 
@@ -223,56 +223,12 @@
               </div>
               <div class="comment-box">
                 <div class="comment">
-                  {{ each_pice.command }}
+                  {{ each_pice.command | safe }}
                 </div>
               </div>
 
         {% endfor %}
 
-
-
-
-
-{#<div class="code-review-box">#}
-{#  <div class="code-block">#}
-{#    <!-- Your code difference will go here -->#}
-{#    <pre>#}
-{#    <code>unchanged line of code</code>#}
-{#    <code><del>- line to be removed</del></code>#}
-{#    <code><ins>+ line to be added</ins></code>#}
-{#    <code>unchanged line of code</code>#}
-{#    <code><del>- line to be removed</del></code>#}
-{#    <code><ins>+ line to be added</ins></code>#}
-{#    <code>unchanged line of code</code>#}
-{#    <code>unchanged line of code</code>#}
-{#    <code><del>- line to be removed</del></code>#}
-{#    <code><ins>+ line to be added</ins></code>#}
-{#    <code>unchanged line of code</code>#}
-{#    <code><del>- line to be removed</del></code>#}
-{#    <code><ins>+ line to be added</ins></code>#}
-{#    <code>unchanged line of code</code>#}
-{#    <code>unchanged line of code</code>#}
-{#    <code><del>- line to be removed</del></code>#}
-{#    <code><ins>+ line to be added</ins></code>#}
-{#    <code>unchanged line of code</code>#}
-{#    <code><del>- line to be removed</del></code>#}
-{#    <code><ins>+ line to be added</ins></code>#}
-{#    <code>unchanged line of code</code>#}
-{#    </pre>#}
-{#  </div>#}
-{#  <div class="comment-box">#}
-{#    <div class="comment">#}
-{#      <!-- Your comment will go here -->#}
-{#      This is a comment about the above code changes.#}
-{#    </div>#}
-{#  </div>#}
-{#</div>#}
-
-
-
-
-
-{#      </div>#}
     </main>
   </div>
 </div>
