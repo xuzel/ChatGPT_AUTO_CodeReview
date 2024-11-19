@@ -1,13 +1,14 @@
 import re
+import typing
+from urllib.parse import urlparse
 
 from django.shortcuts import render
-from django.http import HttpResponse
 from pydriller import Repository
-from urllib.parse import urlparse
-import typing
-import code_compare.code_reviewer.code_review as code_review
 
-codereview = code_review.CoseReview()
+from .llm import LLMCodeReviewer
+# import code_compare.code_reviewer_microsoft.code_review as code_review
+#
+codereview = LLMCodeReviewer()
 data_dict = dict()
 file_name_list = list()
 change_dict = dict()
@@ -98,9 +99,11 @@ def main_code_diff_compare(request):
             print(data_dict[file_name])
             change_code_and_command = list()
             for index, value in enumerate(change_dict[file_name]):
+                # print(change_dict[file_name][index])
                 change_code_and_command.append({
                     'data': data_dict[file_name][index],
-                    'command': codereview.generate(change_dict[file_name][index])
+                    # 'command': "a review"
+                    'command': codereview.process(change_dict[file_name][index])
                 })
 
             return render(request, 'main_ui.html', {'file_name': file_name_list, 'change_dict': change_code_and_command})
