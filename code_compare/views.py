@@ -4,14 +4,18 @@ from urllib.parse import urlparse
 
 from django.shortcuts import render
 from pydriller import Repository
+from time import sleep
 
 from .llm import LLMCodeReviewer
+from .database import *
+
 # import code_compare.code_reviewer_microsoft.code_review as code_review
 #
 codereview = LLMCodeReviewer()
 data_dict = dict()
 file_name_list = list()
 change_dict = dict()
+database = Database()
 
 
 def url_preprocess(url: str) -> typing.Dict[str, str]:
@@ -64,13 +68,22 @@ def main_code_diff_compare(request):
     global data_dict
     global file_name_list
     global change_dict
+    global database
     if request.method == 'POST':
         data_dict = dict()
         file_name_list = list()
         change_dict = dict()
         search = request.POST.get('search')
-        url, commit_hash = url_preprocess(search)['url'], url_preprocess(search)['hash']
-        change_dict = get_commit_diff(url, commit_hash)
+        if database.get_record(search):
+            print("have record")
+            change_dict = database.get_record(search)
+            sleep(0.5)
+        else:
+            print("no record")
+            url, commit_hash = url_preprocess(search)['url'], url_preprocess(search)['hash']
+            change_dict = get_commit_diff(url, commit_hash)
+            database.add_record(search, change_dict)
+            database.save_data()
         # print(change_dict)
         for file_name, changes in change_dict.items():
             file_name_list.append(file_name)
@@ -106,5 +119,6 @@ def main_code_diff_compare(request):
                     'command': codereview.process(change_dict[file_name][index])
                 })
 
-            return render(request, 'main_ui.html', {'file_name': file_name_list, 'change_dict': change_code_and_command})
+            return render(request, 'main_ui.html',
+                          {'file_name': file_name_list, 'change_dict': change_code_and_command})
         return render(request, 'main_ui.html', {'file_name': file_name_list})
